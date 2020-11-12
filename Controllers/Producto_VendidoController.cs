@@ -17,8 +17,6 @@ namespace LA_VENDUTA.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-
-
         // GET: Producto_Vendido/Create
         public ActionResult Create(int carritoId=-1,int Total=0)
         {
@@ -35,8 +33,6 @@ namespace LA_VENDUTA.Controllers
         }
 
         // POST: Producto_Vendido/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         public async Task<ActionResult> Create(Producto_Vendido producto_Vendido, int carritoId,int Total)
         {
@@ -100,13 +96,11 @@ namespace LA_VENDUTA.Controllers
             }
             return RedirectToAction("Index", "Anuncios", new { nameAnuncio = "ErrorCompra" });
         }
-
         
         public ActionResult CrearTarjeta()
         {
             return View();
         }
-
 
         [HttpPost]
         public async Task<ActionResult> CrearTarjeta([Bind(Include = "tarjeta")] double tarjeta)

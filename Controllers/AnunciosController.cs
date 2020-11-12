@@ -391,7 +391,8 @@ namespace LA_VENDUTA.Controllers
         [HttpPost]
         [Authorize(Roles = RoleName.Vendedor)]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Nombre,Tipo,Especificacion,Precio,Fecha,Cantidad,Calificacion,Etiqueta,Descripcion")] ProductoAnuncio productoanuncio, HttpPostedFileBase upload)
+        public async Task<ActionResult> Create([Bind(Include = "Nombre,Tipo,Especificacion,Precio,Fecha,Cantidad,Calificacion,Etiqueta,Descripcion")] 
+        ProductoAnuncio productoanuncio, HttpPostedFileBase upload)
         {
             Anuncio anuncio = new Anuncio();
             anuncio.Cantidad = productoanuncio.Cantidad;
