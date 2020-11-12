@@ -1,0 +1,172 @@
+﻿@model IEnumerable<LA_VENDUTA.Models.Carrito>
+@{
+    int suma = 0;
+    foreach (var x in Model)
+    {
+        suma += x.Cantidad * x.Anuncio.NuevoPrecio;
+    }
+}
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<body>
+
+    <!-- Title Page -->
+    <section class="bg-title-page p-t-40 p-b-50 flex-col-c-m" style="background-image: url(/images/heading-pages-01.jpg);">
+        <h2 class="l-text2 t-center">
+            Cart
+        </h2>
+    </section>
+
+    <!-- Cart -->
+    <section class="cart bgwhite p-t-70 p-b-100">
+        <div class="container">
+            <!-- Cart item -->
+            <div class="container-table-cart pos-relative">
+                <div class="wrap-table-shopping-cart bgwhite">
+                    <table class="table-shopping-cart">
+                        <tr class="table-head">
+                            <th class="column-1">@Html.DisplayNameFor(model => model.Anuncio.Files)</th>
+                            <th class="column-2">@Html.DisplayNameFor(model => model.Anuncio.Producto)</th>
+                            <th class="column-3">@Html.DisplayNameFor(model => model.Anuncio.Producto)</th>
+                            <th class="column-4 p-l-70">@Html.DisplayNameFor(model => model.Anuncio.Cantidad)</th>
+                            <th class="column-5">Total</th>
+                            <th class="column-6">@Html.ActionLink("Vaciar Carrito", "VaciarCarrito", new { compro = false })</th>
+                            <th class="column-7"><span>Comprar un solo Articulo</span></th>
+                        </tr>
+                        @foreach (var item in Model)
+                        {
+                            <tr class="table-row">
+                                <td class="column-1">
+                                    <div class="cart-img-product b-rad-4 o-f-hidden">
+                                        @if (item.Anuncio.Files.Any(f => f.FileType == LA_VENDUTA.Models.FileType.Avatar))
+                                        {
+                                            <img src="~/Files?id=@item.Anuncio.Files.First(f => f.FileType == LA_VENDUTA.Models.FileType.Avatar).FileId" alt="avatar" />
+                                        }
+                                        else
+                                        {
+
+                                        }
+                                    </div>
+                                </td>
+                                <td class="column-2">@Html.DisplayFor(modelItem => item.Anuncio.Producto.Nombre)</td>
+                                <td class="column-3">@Html.DisplayFor(modelItem => item.Anuncio.NuevoPrecio)</td>
+                                <td class="column-4">
+                                    @using (Html.BeginForm("ModifyCant", "Carritos", new { CarritoId = item.CarritoId }))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        <div class="flex-r-m flex-w p-t-10">
+                                            <div class="w-size16 flex-m flex-w">
+                                                <div class="flex-w bo5 of-hidden w-size17">
+                                                    <button class="btn-num-product-down color1 flex-c-m size7 bg8 eff2">
+                                                        <i class="fs-12 fa fa-minus" aria-hidden="true"></i>
+                                                    </button>
+
+                                                    <input class="size8 m-text18 t-center num-product" type="number" name="cantidad" id="cantidad" value="@item.Cantidad">
+
+                                                    <button class="btn-num-product-up color1 flex-c-m size7 bg8 eff2">
+                                                        <i class="fs-12 fa fa-plus" aria-hidden="true"></i>
+                                                    </button>
+                                                </div>
+
+                                                <div class="btn-addcart-product-detail size9 trans-0-4 m-t-10 m-b-10">
+                                                    <!-- Button -->
+                                                    <input type="submit" value="Modificar Pedido" class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4" />
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    }
+
+                                </td>
+                                <td class="column-5">@(item.Cantidad * item.Anuncio.NuevoPrecio)</td>
+                                <td class="column-6">@Html.ActionLink("X", "Delete", new { id = item.CarritoId, compra = false })</td>
+                                <td class="column-7">@Html.ActionLink("OK", "Create", "Producto_Vendido", new { Total = @suma, carritoId=item.CarritoId }, FormMethod.Get)</td>
+                            </tr>
+
+                        }
+
+                    </table>
+                </div>
+            </div>
+            @*@using (Html.BeginForm())
+                {
+                    <div class="flex-w flex-sb-m p-t-25 p-b-25 bo8 p-l-35 p-r-60 p-lr-15-sm">
+                        <div class="flex-w flex-m w-full-sm">
+                            <div class="size11 bo4 m-r-10">
+                                <input class="sizefull s-text7 p-l-22 p-r-22" type="text" name="coupon-code" placeholder="Coupon Code">
+                            </div>
+
+                            <div class="size12 trans-0-4 m-t-10 m-b-10 m-r-10">
+                                 Button
+                                <button class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4">
+                                    Apply coupon
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="size10 trans-0-4 m-t-10 m-b-10">
+                             Button
+                            <button class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4">
+                                Update Cart
+                            </button>
+                        </div>
+                    </div>
+                }*@
+        </div>
+        <!-- Total -->
+        <div class="bo9 w-size18 p-l-40 p-r-40 p-t-30 p-b-38 m-t-30 m-r-0 m-l-auto p-lr-15-sm">
+            <h5 class="m-text20 p-b-24">
+                Cart Totals
+            </h5>
+
+            <!--  -->
+            <div class="flex-w flex-sb-m p-b-12">
+                <span class="s-text18 w-size19 w-full-sm">
+                    Subtotal:
+                </span>
+
+                <span class="m-text21 w-size20 w-full-sm">
+                    @suma
+                </span>
+            </div>
+
+            <!--  -->
+            <div class="size15 trans-0-4">
+                @if (User.IsInRole("Comprador"))
+                {
+                    //using (Html.BeginForm("Create", "Producto_Vendido", new { Total = 12, carritoId = -1 }, FormMethod.Get))
+                    //{
+
+                        <span class="m-text22 w-size19 w-full-sm">
+                            Total:
+                        </span>
+
+                        <span class="m-text21 w-size20 w-full-sm">
+                            @suma
+                        </span>
+                        
+                        <!-- Button -->
+            <button class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4" type="submit">
+                @Html.ActionLink("Proceder al Pago", "Create", "Producto_Vendido", new { Total = @suma, carritoId = -1 }, FormMethod.Get)
+            </button>
+                    //}
+                }
+
+            </div>
+            <!--  -->
+
+        </div>
+        <!--  -->
+        
+
+
+
+
+
+    </section>
+
+
+</body>

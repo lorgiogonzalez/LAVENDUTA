@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewBag.Title = "CrearTarjeta";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>CrearTarjeta</h2>
+@using (Html.BeginForm("CrearTarjeta", "Producto_Vendido", method: FormMethod.Post))
+{
+    <div class="form-group">
+        Tarjeta
+        <div class="col-md-10">
+            @Html.TextBox("tarjeta")
+        </div>
+    </div>
+  
+        <!-- Button -->
+        <button type="submit" class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4">
+            Añadir Tarjeta
+        </button>
+  
+}

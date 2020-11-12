@@ -1,0 +1,70 @@
+﻿<div class="swal-overlay swal-overlay--show-modal" tabindex="-1">
+    <div class="swal-modal">
+
+        @if (Model.Item4 == "ErrorCompra")
+        {
+            <div class="swal-title" style=""> ERROR </div><div class="swal-text" style="">Su compra no  ha procedido!!!</div><div class="swal-text" style="">Rectifque bien sus opciones de pago o saldo disponible.</div>
+
+        }
+        else if (Model.Item4 == "ErrorSubasta")
+        {
+            <div class="swal-title" style=""> ERROR </div><div class="swal-text" style="">Su subasta no  ha procedido!!!</div><div class="swal-text" style="">Rectifque bien sus opciones de pago, saldo disponible o puja maxima.</div>
+
+        }
+        else if (Model.Item4 == "ErrorCantidad")
+        {
+            <div class="swal-title" style=""> ERROR </div><div class="swal-text" style="">Su compra no  ha procedido!!!</div><div class="swal-text" style="">No Tenemos esa cantidad de articulos disponibles.</div>
+
+        }
+        else
+        {
+            <div class="swal-icon swal-icon--success">
+                <span class="swal-icon--success__line swal-icon--success__line--long"></span>
+                <span class="swal-icon--success__line swal-icon--success__line--tip"></span>
+
+                <div class="swal-icon--success__ring"></div>
+                <div class="swal-icon--success__hide-corners"></div>
+            </div>
+            if (Model.Item4 == "AcceptCompra")
+            {
+                <div class="swal-title" style=""> Su Compra </div><div class="swal-text" style="">Se ha concluido Satifactoriamente!!!</div><div class="swal-text" style="">Rectifque bien sus opciones de garantia bajo cualquier condicion.</div>
+            }
+            else if (Model.Item4 == "AcceptSubasta")
+            {
+                <div class="swal-title" style=""> Su Subasta </div><div class="swal-text" style="">Se ha concluido Satifactoriamente!!!</div><div class="swal-text" style="">Este atente siempre a las proximas pujas.</div>
+            }
+            else if (Model.Item4 == "AcceptTarjeta")
+            {
+                <div class="swal-title" style=""> Su Tarjea </div><div class="swal-text" style="">Se ha añadido Satifactoriamente!!!</div><div class="swal-text" style="">Aseguramos el mayor de nivel de seguridad con un nivel de seguridad unico.</div>
+            }
+            else if (Model.Item4!= null && Model.Item4[0] == '@')
+            {
+    <div class="swal-title" style=""> Informes!!! </div><div class="swal-text" style=""></div>
+                var array = (string[])Model.Item4.Split('@');
+                foreach (var item in array)
+                {
+                    <div class="swal-text" style="">@item</div>
+                }
+            }
+            else
+            {
+                <div class="swal-title" style="">@Model.Item4</div><div class="swal-text" style="">Se añadio Al Carro!</div><div class="swal-text" style="">Se les Reserva Los Productos Por 5 Dias</div>
+
+            }
+        }
+
+        <div class="swal-footer">
+            <div class="swal-button-container">
+                @Html.ActionLink("OK", "Index", null, new { @class = "swal-button swal-button--confirm" })
+
+
+                <div class="swal-button__loader">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    </div>

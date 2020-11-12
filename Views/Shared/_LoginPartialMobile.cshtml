@@ -1,0 +1,35 @@
+﻿@using Microsoft.AspNet.Identity
+
+@if (Request.IsAuthenticated)
+{
+    <div class="header-icons-mobile">
+        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+        {
+            @Html.AntiForgeryToken()
+
+
+            @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+            <a href="javascript:document.getElementById('logoutForm').submit()" class="header-wrapicon1 - dis-block">Log off</a>
+
+        }
+        <span class="linedivide2"></span>
+        @if (User.IsInRole("Comprador"))
+        {
+            <div class="header-wrapicon2">
+                <a href="@Url.Action("Index","Carritos",routeValues: null)">
+                    <img src="~/images/icons/icon-header-02.png" class="header-icon1 js-show-header-dropdown" alt="ICON">
+                </a>
+            </div>
+        }
+    </div>
+}
+else
+{
+<div class="header-icons-mobile">
+        <a href=@Url.Action("Login", "Account", routeValues: null) class="header-wrapicon1 dis-block">
+            <img src="~/images/icons/icon-header-01.png" class="header-icon1" alt="ICON">
+        </a>
+</div>
+
+    }
+

@@ -1,0 +1,513 @@
+﻿@model Tuple<IEnumerable<Anuncio>,IEnumerable<Subasta>,IEnumerable<Anuncio>,string>
+    <body>
+
+        @if (Model.Item4!="")
+        {
+            @Html.Partial("_Accept")
+        }
+        <!-- Slide1 -->
+        <section class="slide1">
+            <div class="wrap-slick1">
+                <div class="slick1">
+                    <div class="item-slick1 item1-slick1" style="background-image: url(/images/5.png);">
+                        <div class="wrap-content-slide1 sizefull flex-col-c-m p-l-15 p-r-15 p-t-150 p-b-170">
+                            <span class="caption1-slide1 m-text1 t-center animated visible-false m-b-15" data-appear="fadeInDown">
+                                Una marca reconocida a nivel mundial. Le aseguramos el maximo nivel de calidad y oferta
+                            </span>
+
+                            <h2 class="caption2-slide1 xl-text1 t-center animated visible-false m-b-37" data-appear="fadeInUp">
+                                Encuentra sus zapatos perfectos
+
+                            </h2>
+
+                            
+                        </div>
+                    </div>
+
+                    <div class="item-slick1 item2-slick1" style="background-image: url(/images/indice1.jpg);">
+                        <div class="wrap-content-slide1 sizefull flex-col-c-m p-l-15 p-r-15 p-t-150 p-b-170">
+                            <span class="caption1-slide1 m-text1 t-center animated visible-false m-b-15" data-appear="rollIn">
+                                Una marca reconocida a nivel mundial. Le aseguramos el maximo nivel de calidad y oferta
+                            </span>
+
+                            <h2 class="caption2-slide1 xl-text1 t-center animated visible-false m-b-37" data-appear="lightSpeedIn">
+                                Sus mejores telefonos y servicios para todo tipo de Teconologia
+                            </h2>
+
+                            
+                        </div>
+                    </div>
+
+                    <div class="item-slick1 item3-slick1" style="background-image: url(/images/indice2.jpg);">
+                        <div class="wrap-content-slide1 sizefull flex-col-c-m p-l-15 p-r-15 p-t-150 p-b-170">
+                            <span class="caption1-slide1 m-text1 t-center animated visible-false m-b-15" data-appear="rotateInDownLeft">
+                                Mejores Rebajas Pos-Covid
+                            </span>
+
+                            <h2 class="caption2-slide1 xl-text1 t-center animated visible-false m-b-37" data-appear="rotateInUpRight">
+                                Ofertas
+                            </h2>
+
+                            
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+
+        <!-- New Product -->
+        <section class="newproduct bgwhite p-t-45 p-b-105">
+            <div class="container">
+                <div class="sec-title p-b-60">
+                    <h3 class="m-text5 t-center">
+                        Mejores Productos
+                    </h3>
+                </div>
+
+                <!-- Slide2 -->
+                <div class="wrap-slick2">
+                    <div class="slick2">
+
+                        @foreach (var item in Model.Item1)
+                        {
+                            <div class="item-slick2 p-l-15 p-r-15">
+                                <!-- Block2 -->
+                                <div class="block2">
+                                    @if (item.Precio > item.NuevoPrecio)
+                                    {
+                                        <div class="block2-img wrap-pic-w of-hidden pos-relative block2-labelsale">
+                                            <figure class="block-4-image">
+                                                @if (item.Files.Any(f => f.FileType == LA_VENDUTA.Models.FileType.Avatar))
+                                                {
+                                                    <img src="~/Files?id=@item.Files.First(f => f.FileType == LA_VENDUTA.Models.FileType.Avatar).FileId" alt="avatar" />
+                                                }
+                                                else
+                                                {
+
+                                                }
+                                            </figure>
+
+                                            <div class="block2-overlay trans-0-4">
+
+
+                                                @if (User.IsInRole("Comprador"))
+                                                {
+                                                    using (Html.BeginForm("AñadirAlCarrito", "Anuncios", new { idAnuncio = item.AnuncioId, controlador = "Home" }, FormMethod.Post, htmlAttributes: new { @class = "block2-btn-addcart w-size1 trans-0-4" }))
+                                                    {
+                                                        @Html.AntiForgeryToken()
+
+                                                        <!-- Button -->
+                                                        <button class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
+                                                            Add to Cart
+                                                        </button>
+
+                                                    }
+                                                }
+                                                else if (User.IsInRole("Vendedor") && item.Vendedor.User == User.Identity.Name)
+                                                {
+                                                    using (Html.BeginForm("Edit", "Anuncios", new { id = item.AnuncioId }, FormMethod.Get))
+                                                    {
+
+                                                        <div class="block2-btn-addcart w-size1 trans-0-4">
+                                                            <!-- Button -->
+                                                            <button class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
+                                                                Editar Anuncio
+                                                            </button>
+                                                        </div>
+                                                    }
+                                                }
+
+
+                                            </div>
+                                        </div>
+                                    }
+                                    else if (item.Fecha.AddDays(7) > DateTime.Now)
+                                    {
+                                        <div class="block2-img wrap-pic-w of-hidden pos-relative block2-labelnew">
+                                            <figure class="block-4-image">
+                                                @if (item.Files.Any(f => f.FileType == LA_VENDUTA.Models.FileType.Avatar))
+                                                {
+                                                    <img src="~/Files?id=@item.Files.First(f => f.FileType == LA_VENDUTA.Models.FileType.Avatar).FileId" alt="avatar" />
+                                                }
+                                                else
+                                                {
+
+                                                }
+                                            </figure>
+
+                                            <div class="block2-overlay trans-0-4">
+
+
+                                                @if (User.IsInRole("Comprador"))
+                                                {
+                                                    using (Html.BeginForm("AñadirAlCarrito", "Anuncios", new { idAnuncio = item.AnuncioId, controlador = "Home" }, FormMethod.Post, htmlAttributes: new { @class = "block2-btn-addcart w-size1 trans-0-4" }))
+                                                    {
+                                                        @Html.AntiForgeryToken()
+
+                                                        <!-- Button -->
+                                                        <button class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
+                                                            Add to Cart
+                                                        </button>
+
+                                                    }
+                                                }
+                                                else if (User.IsInRole("Vendedor") && item.Vendedor.User == User.Identity.Name)
+                                                {
+                                                    using (Html.BeginForm("Edit", "Anuncios", new { id = item.AnuncioId }, FormMethod.Get))
+                                                    {
+
+                                                        <div class="block2-btn-addcart w-size1 trans-0-4">
+                                                            <!-- Button -->
+                                                            <button class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
+                                                                Editar Anuncio
+                                                            </button>
+                                                        </div>
+                                                    }
+                                                }
+
+
+                                            </div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="block2-img wrap-pic-w of-hidden pos-relative">
+                                            <figure class="block-4-image">
+                                                @if (item.Files.Any(f => f.FileType == LA_VENDUTA.Models.FileType.Avatar))
+                                                {
+                                                    <img src="~/Files?id=@item.Files.First(f => f.FileType == LA_VENDUTA.Models.FileType.Avatar).FileId" alt="avatar" />
+                                                }
+                                                else
+                                                {
+
+                                                }
+                                            </figure>
+
+                                            <div class="block2-overlay trans-0-4">
+
+
+                                                @if (User.IsInRole("Comprador"))
+                                                {
+                                                    using (Html.BeginForm("AñadirAlCarrito", "Anuncios", new { idAnuncio = item.AnuncioId, controlador = "Home" }, FormMethod.Post, htmlAttributes: new { @class = "block2-btn-addcart w-size1 trans-0-4" }))
+                                                    {
+                                                        @Html.AntiForgeryToken()
+
+                                                        <!-- Button -->
+                                                        <button class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
+                                                            Add to Cart
+                                                        </button>
+
+                                                    }
+                                                }
+                                                else if (User.IsInRole("Vendedor") && item.Vendedor.User == User.Identity.Name)
+                                                {
+                                                    using (Html.BeginForm("Edit", "Anuncios", new { id = item.AnuncioId }, FormMethod.Get))
+                                                    {
+
+                                                        <div class="block2-btn-addcart w-size1 trans-0-4">
+                                                            <!-- Button -->
+                                                            <button class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
+                                                                Editar Anuncio
+                                                            </button>
+                                                        </div>
+                                                    }
+                                                }
+
+
+                                            </div>
+                                        </div>
+                                    }
+
+                                    <div class="block2-txt p-t-20">
+                                        @Html.ActionLink(item.Producto.Nombre, "Details", "Anuncios", new { id = item.AnuncioId }, htmlAttributes: new { @class = "block2-name dis-block s-text3 p-b-5" })
+                                        <span class="block2-price m-text6 p-r-5">
+                                            $@item.NuevoPrecio
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        }
+                    </div>
+                </div>
+                @if (Model.Item1.Count() == 0)
+                {
+                    <h3 class="m-text5 t-center">
+                        No Hay Ningun Anuncio
+                    </h3>
+                }
+            </div>
+        </section>
+
+        <!-- Rebajas -->
+        <section class="banner2 bg5 p-t-55 p-b-55">
+            <div class="container">
+                <div class="sec-title p-b-60">
+                    <h3 class="m-text5 t-center">
+                        Rebajas
+                    </h3>
+                </div>
+                <div class="row">
+
+                    @foreach (var item in Model.Item3)
+                    {
+                        <div class="col-sm-10 col-md-8 col-lg-6 m-l-r-auto p-t-15 p-b-15">
+                            <div class="bgwhite hov-img-zoom pos-relative p-b-20per-ssm">
+                                @if (item.Files.Any(f => f.FileType == LA_VENDUTA.Models.FileType.Avatar))
+                                {
+                                    <img src="~/Files?id=@item.Files.First(f => f.FileType == LA_VENDUTA.Models.FileType.Avatar).FileId" alt="IMG-BANNER" width="720" height="539" />
+                                }
+                                else
+                                {
+
+                                }
+
+                                <div class="ab-t-l sizefull flex-col-c-b p-l-15 p-r-15 p-b-20">
+                                    <div class="t-center">
+                                        @Html.ActionLink(item.Producto.Nombre, "Details", "Anuncios", new { id = item.AnuncioId }, htmlAttributes: new { @class = "dis-block s-text3 p-b-5" })
+
+                                        <span class="block2-oldprice m-text7 p-r-5">
+                                            $@item.Precio
+                                        </span>
+
+                                        <span class="block2-newprice m-text8">
+                                            $@item.NuevoPrecio
+                                        </span>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+                @if (Model.Item3.Count() == 0)
+                {
+                    <h3 class="m-text5 t-center">
+                        No Hay Ningun Anuncio En Rebaja
+                    </h3>
+                }
+            </div>
+        </section>
+
+
+        <!-- Subastas -->
+        <section class="blog bgwhite p-t-94 p-b-65">
+            <div class="container">
+                <div class="sec-title p-b-52">
+                    <h3 class="m-text5 t-center">
+                        Subastas
+                    </h3>
+                </div>
+
+                <div class="row">
+                    @foreach (var item in Model.Item2)
+                    {
+
+                        <!-- Block3 -->
+
+                        <div class="col-sm-10 col-md-4 p-b-30 m-l-r-auto">
+                            <div class="block3">
+                                <a href="@Url.Action("Details","Subastas",new { id = item.SubastaId })" class="block3-img dis-block hov-img-zoom">
+                                    @if (item.Anuncio.Files.Any(f => f.FileType == LA_VENDUTA.Models.FileType.Avatar))
+                                    {
+                                        <img src="~/Files?id=@item.Anuncio.Files.First(f => f.FileType == LA_VENDUTA.Models.FileType.Avatar).FileId" alt="IMG-BLOG" />
+                                    }
+                                    else
+                                    {
+
+                                    }
+                                </a>
+
+                                <div class="block3-txt p-t-14">
+                                    <h4 class="p-b-7">
+                                        @Html.ActionLink(item.Anuncio.Producto.Nombre, "Details", "Subastas", new { id = item.SubastaId }, htmlAttributes: new { @class = "m-text11" })
+                                    </h4>
+
+
+
+                                    <span class="s-text6">
+                                        By
+                                    </span>
+                                    <span class="s-text7"> @item.Anuncio.Vendedor.Nombre</span>
+                                    <span class="s-text6">Hasta: </span> <span class="s-text7">@item.FechadeCulminacion.ToString("d/MM/yyyy  hh:mm:ss") <span class="m-l-3 m-r-6">|</span></span>
+                                    <span>
+                                        @item.Anuncio.Etiqueta
+                                        <span class="m-l-3 m-r-6">|</span>
+                                    </span>
+
+
+                                    @if (item.Comprador != null)
+                                    {
+                                        <span>
+                                            Puja Actual: $@item.PujaActual Por: @item.Comprador.Nombre
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span>
+                                            Puja Inicial: $@item.PujaInicial
+                                            <span class="m-l-3 m-r-6">|</span>
+                                        </span>
+
+                                        <span>
+                                            No Hay Puja
+                                        </span>
+                                    }
+
+
+
+                                    <p class="p-b-12">
+                                        @item.Comentarios
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    @if (Model.Item2.Count() == 0)
+                    {
+                        <h3 class="m-text5 t-center">
+                            No Hay Ninguna Subasta
+                        </h3>
+                    }
+                </div>
+            </div>
+        </section>
+
+        <!-- Instagram -->
+        <section class="instagram p-t-20">
+            <div class="sec-title p-b-52 p-l-15 p-r-15">
+                <h3 class="m-text5 t-center">
+                    Like us on Instagram
+                </h3>
+            </div>
+
+            <div class="flex-w">
+                <!-- Block4 -->
+                <div class="block4 wrap-pic-w">
+                    <img src="~/images/lorgio.jpg" alt="IMG-INSTAGRAM">
+
+                    <a href="#" class="block4-overlay sizefull ab-t-l trans-0-4">
+                        <span class="block4-overlay-heart s-text9 flex-m trans-0-4 p-l-40 p-t-25">
+                            <i class="icon_heart_alt fs-20 p-r-12" aria-hidden="true"></i>
+                            <span class="p-t-2">39</span>
+                        </span>
+
+                        <div class="block4-overlay-txt trans-0-4 p-l-40 p-r-25 p-b-30">
+                            <p class="s-text10 m-b-15 h-size1 of-hidden">
+                                Desarrolador
+                            </p>
+
+                            <span class="s-text9">
+                                Photo de Lorgio Gonzalez Perez
+                            </span>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Block4 -->
+                <div class="block4 wrap-pic-w">
+                    <img src="~/images/aldo.jpg" alt="IMG-INSTAGRAM">
+
+                    <a href="#" class="block4-overlay sizefull ab-t-l trans-0-4">
+                        <span class="block4-overlay-heart s-text9 flex-m trans-0-4 p-l-40 p-t-25">
+                            <i class="icon_heart_alt fs-20 p-r-12" aria-hidden="true"></i>
+                            <span class="p-t-2">39</span>
+                        </span>
+
+                        <div class="block4-overlay-txt trans-0-4 p-l-40 p-r-25 p-b-30">
+                            <p class="s-text10 m-b-15 h-size1 of-hidden">
+                                Desarrolador
+                            </p>
+
+                            <span class="s-text9">
+                                Photo de Aldo Javier Verdesia
+                            </span>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Block4 -->
+                <div class="block4 wrap-pic-w">
+                    <img src="~/images/rodrigo.jpg" alt="IMG-INSTAGRAM">
+
+                    <a href="#" class="block4-overlay sizefull ab-t-l trans-0-4">
+                        <span class="block4-overlay-heart s-text9 flex-m trans-0-4 p-l-40 p-t-25">
+                            <i class="icon_heart_alt fs-20 p-r-12" aria-hidden="true"></i>
+                            <span class="p-t-2">39</span>
+                        </span>
+
+                        <div class="block4-overlay-txt trans-0-4 p-l-40 p-r-25 p-b-30">
+                            <p class="s-text10 m-b-15 h-size1 of-hidden">
+                                Desarrolador
+                            </p>
+
+                            <span class="s-text9">
+                                Photo de Rodrigo Daniel Pino
+                            </span>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Block4 -->
+                <div class="block4 wrap-pic-w">
+                    <img src="~/images/yansaro.jpg" alt="IMG-INSTAGRAM">
+
+                    <a href="#" class="block4-overlay sizefull ab-t-l trans-0-4">
+                        <span class="block4-overlay-heart s-text9 flex-m trans-0-4 p-l-40 p-t-25">
+                            <i class="icon_heart_alt fs-20 p-r-12" aria-hidden="true"></i>
+                            <span class="p-t-2">39</span>
+                        </span>
+
+                        <div class="block4-overlay-txt trans-0-4 p-l-40 p-r-25 p-b-30">
+                            <p class="s-text10 m-b-15 h-size1 of-hidden">
+                                Desarrolador
+                            </p>
+
+                            <span class="s-text9">
+                                Photo de Yansaro
+                            </span>
+                        </div>
+                    </a>
+                </div>
+
+
+            </div>
+        </section>
+
+        <!-- Shipping -->
+        <section class="shipping bgwhite p-t-62 p-b-46">
+            <div class="flex-w p-l-15 p-r-15">
+                <div class="flex-col-c w-size5 p-l-15 p-r-15 p-t-16 p-b-15 respon1">
+                    <h4 class="m-text12 t-center">
+                        Libre de costo la mensajeria
+                    </h4>
+                </div>
+
+                <div class="flex-col-c w-size5 p-l-15 p-r-15 p-t-16 p-b-15 bo2 respon2">
+                    <h4 class="m-text12 t-center">
+                        30 dias de libre retorno
+                    </h4>
+
+                    <span class="s-text11 t-center">
+                        Facil el cambio dentro de los 30 dias.
+                    </span>
+                </div>
+
+                <div class="flex-col-c w-size5 p-l-15 p-r-15 p-t-16 p-b-15 respon1">
+                    <h4 class="m-text12 t-center">
+                        Tienda Abierta
+                    </h4>
+
+                    <span class="s-text11 t-center">
+                        Compre de Lunes a Domingo
+                    </span>
+                </div>
+            </div>
+        </section>
+    </body>
+
+    

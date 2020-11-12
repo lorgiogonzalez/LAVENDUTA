@@ -1,0 +1,306 @@
+﻿@model LA_VENDUTA.Class.ProductoAnuncio
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    var Vivienda = new List<SelectListItem>(){
+        new SelectListItem()
+        {
+            Value="0", Text="Casa"
+        },
+        new SelectListItem()
+        {
+            Value="1", Text="Apartamento"
+        },
+        new SelectListItem()
+        {
+            Value="2", Text="Casa En La Playa"
+        },
+        new SelectListItem()
+        {
+            Value="3", Text="Finca"
+        }
+
+    };
+
+    var Automotriz = new List<SelectListItem>(){
+        new SelectListItem()
+        {
+            Value="0", Text="Carro"
+        },
+        new SelectListItem()
+        {
+            Value="1", Text="Moto"
+        },
+        new SelectListItem()
+        {
+            Value="2", Text="Moto Electrica"
+        },
+        new SelectListItem()
+        {
+            Value="3", Text="Bicicleta"
+        },
+        new SelectListItem()
+        {
+            Value="4", Text="Bicicleta Electrica"
+        },
+        new SelectListItem()
+        {
+            Value="5", Text="Piezas"
+        }
+
+    };
+
+    var Vestimenta = new List<SelectListItem>(){
+        new SelectListItem()
+        {
+            Value="0", Text="Bisuteria"
+        },
+        new SelectListItem()
+        {
+            Value="1", Text="Peleteria"
+        },
+        new SelectListItem()
+        {
+            Value="2", Text="Ropa"
+        }
+
+    };
+
+    var CompElectr = new List<SelectListItem>(){
+        new SelectListItem()
+        {
+            Value="0", Text="Laptop"
+        },
+        new SelectListItem()
+        {
+            Value="1", Text="PC de Escritorio"
+        },
+        new SelectListItem()
+        {
+            Value="2", Text="Piezas"
+        },
+        new SelectListItem()
+        {
+            Value="3", Text="Moviles"
+        },
+        new SelectListItem()
+        {
+            Value="4", Text="Tablet"
+        },
+        new SelectListItem()
+        {
+            Value="5", Text="Equipos de Musica"
+        },
+        new SelectListItem()
+        {
+            Value="6", Text="Conexión"
+        },
+        new SelectListItem()
+        {
+            Value="7", Text="Consola y VideoJuegos"
+        }
+
+    };
+
+    var Electrodomes = new List<SelectListItem>(){
+        new SelectListItem()
+        {
+            Value="0", Text="Televisor"
+        },
+        new SelectListItem()
+        {
+            Value="1", Text="Aire Acondicionado o Split"
+        },
+        new SelectListItem()
+        {
+            Value="2", Text="Batidora"
+        },
+        new SelectListItem()
+        {
+            Value="3", Text="Refrigerador"
+        },
+        new SelectListItem()
+        {
+            Value="4", Text="Lavadora"
+        },
+        new SelectListItem()
+        {
+            Value="5", Text="Ventilador"
+        },
+        new SelectListItem()
+        {
+            Value="6", Text="Microondas"
+        },
+        new SelectListItem()
+        {
+            Value="7", Text="Cocina"
+        }
+
+    };
+
+    //Tipo tipo;
+}
+<script src="~/ckeditor/ckeditor.js"></script>
+<script src="~/ckeditor/adapters/jquery.js"></script>
+
+<script type="text/javascript">
+    function fileCheck(obj) {
+        var fileExtension = ['jpeg', 'jpg', 'png', 'gif', 'bmp'];
+        if ($.inArray($(obj).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
+            alert("Only '.jpeg','.jpg', '.png', '.gif', '.bmp' formats are allowed.");
+        }
+    }
+</script>
+<h2>Create</h2>
+<style type="text/css">
+    .dropdown1 select {
+        border: 0px;
+        width: 150px;
+        background: none;
+    }
+
+
+    .dropdown1 {
+        border: 2px solid #7d6754;
+        border-radius: 5px;
+        padding: 3px;
+        -webkit-appearance: none;
+        /*background-image: url('http://maxgxl.com/max4u/images/selectArrowDown.png');*/
+        background-position: 225px;
+        background-repeat: no-repeat;
+        text-indent: 0.01px; /*In Firefox*/
+        text-overflow: ''; /*In Firefox*/
+        width: 150px;
+    }
+</style>
+<script src="../../Scripts/jquery-1.7.1.js" type="text/javascript"></script>
+<script src="../../Scripts/jquery-1.7.1.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        //Dropdownlist Selectedchange event
+        $("#Tipo").change(function () {
+            $("#Especificacion").empty();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GetSpecification")', // we are calling json method
+                dataType: 'json',
+                data: { id: $("#Tipo").val() },
+                success: function (states) {
+                    // states contains the JSON formatted list
+                    // of states passed from the controller
+                    $.each(states, function (i, state) {
+                        $("#Especificacion").append('<option value="' + state.Value + '">' + state.Text + '</option>');
+                    }); // here we are adding option for States
+                },
+                error: function (ex) {
+                    alert('Failed to retrieve states.' + ex);
+                }
+            });
+            return false;
+        })
+    });
+</script>
+
+@using (Html.BeginForm("CreateSolosubasta", "Anuncios", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Anuncio</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Nombre, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Tipo, htmlAttributes: new { @class = "control-label col-md-2" })
+
+            <div class="col-md-10">
+                @Html.EnumDropDownListFor(model => model.Tipo, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Tipo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <br />
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Especificacion, htmlAttributes: new { @class = "control-label col-md-2" })
+
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.Especificacion, new SelectList(string.Empty, "Value", "Text"), htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Especificacion, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <br />
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Precio, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Precio, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Precio, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        @*<div class="form-group">
+                @Html.LabelFor(model => model.Image, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <input type="file" name="ImageData" id="ImageData" onchange="fileCheck(this);" />
+                    @Html.ValidationMessageFor(model => model.Image)
+                </div>
+            </div>*@
+        <div class="form-group">
+            @Html.Label("Avatar", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="file" id="Avatar" name="upload" onchange="fileCheck(this);" />
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Cantidad, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Cantidad, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Cantidad, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Etiqueta, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Etiqueta, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Etiqueta, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Descripcion, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Descripcion, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,144 @@
+﻿@model Tuple<IEnumerable<LA_VENDUTA.Models.Anuncio>, int>
+@{
+    int CantDeArticulosXPag = 30;
+    var List = Model.Item1.ToList();
+    int cantdePag = List.Count / CantDeArticulosXPag;
+    int primerArtc = Model.Item2 * CantDeArticulosXPag;
+    int ultimoArticulo = primerArtc + CantDeArticulosXPag < List.Count ? primerArtc + CantDeArticulosXPag : List.Count;
+}
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Elegir Anuncio</h2>
+<p>
+        @Html.ActionLink("Crear Anuncio Para Subasta", "CreateSolosubasta", "Anuncios")
+</p>
+
+
+    <section class="bgwhite p-t-55 p-b-65">
+        <div class="container">
+            <div class="row">
+                
+
+                <div class="col-sm-6 col-md-8 col-lg-9 p-b-50">
+                    <!--  -->
+                    <div class="flex-sb-m flex-w p-b-35">
+        
+
+                        <span class="s-text8 p-t-5 p-b-5">
+                            Showing @(primerArtc + 1)–@(ultimoArticulo) of @List.Count results
+                        </span>
+                    </div>
+
+                    <!-- Product -->
+                    <div class="row">
+
+                        @for (int i = primerArtc; i < ultimoArticulo; i++)
+                        {
+                            var item = List[i];
+                            <div class="col-sm-12 col-md-6 col-lg-4 p-b-50">
+                                <!-- Block2 -->
+                                <div class="block2">
+                                    <div class="block2-img wrap-pic-w of-hidden pos-relative block2-labelnew">
+                                        <figure class="block-4-image">
+                                            @if (item.Files.Any(f => f.FileType == LA_VENDUTA.Models.FileType.Avatar))
+                                            {
+                                                <img src="~/Files?id=@item.Files.First(f => f.FileType == LA_VENDUTA.Models.FileType.Avatar).FileId" alt="avatar" />
+                                            }
+                                            else
+                                            {
+
+                                            }
+                                        </figure>
+
+                                        <div class="block2-overlay trans-0-4">
+                                            <a href="#" class="block2-btn-addwishlist hov-pointer trans-0-4">
+                                                <i class="icon-wishlist icon_heart_alt" aria-hidden="true"></i>
+                                                <i class="icon-wishlist icon_heart dis-none" aria-hidden="true"></i>
+                                            </a>
+                                            <div class="block2-btn-addcart w-size1 trans-0-4">
+                                                @Html.ActionLink("Crear Subasta", "Create", new { id = item.AnuncioId }, htmlAttributes: new { @class = "button flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4" })
+                                            </div>
+
+                                            </div>
+                                        </div>
+
+                                    <div class="block2-txt p-t-20">
+                                        <span class="block2-price m-text6 p-r-5">
+                                            @item.Producto.Nombre
+                                        </span>
+                                        <span class="block2-price m-text6 p-r-5">
+                                            $@item.Precio
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        }
+
+                    </div>
+                    @*<div class="row" data-aos="fade-up">
+                            <div class="col-md-12 text-center">
+                                <div class="site-block-27">
+                                    <ul>
+                                        @if (Model.Item2 != 0)
+                                        {
+                                            <li><a href="@Url.Action("Index","Anuncios",new { vista=Model.Item2-1,filtros1=Model.Item3,filtros2=Model.Item4})">&lt;</a></li>
+                                        }
+
+                                        @for (int i = 0; i <= cantdePag; i++)
+                                        {
+                                            if (Model.Item2 == i)
+                                            {
+                                                <li class="active"><span>@i</span></li>
+                                            }
+                                            else
+                                            {
+                                                <li><a href="@Url.Action("Index","Anuncios",new { vista=i,filtros1=Model.Item3,filtros2=Model.Item4})">@i</a></li>
+                                            }
+                                        }
+                                        @if (Model.Item2 < cantdePag)
+                                        {
+                                            <li><a href="@Url.Action("Index","Anuncios",new { vista=Model.Item2+1,filtros1=Model.Item3,filtros2=Model.Item4})">&gt;</a></li>
+                                        }
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>*@
+                    <!-- Pagination -->
+                    <div class="pagination flex-m flex-w p-t-26">
+                        @if (Model.Item2 != 0)
+                        {
+                            <a href="@Url.Action("Index","Anuncios",new { vista = Model.Item2 - 1 })">&lt;</a>
+                        }
+
+                        @for (int i = 0; i <= cantdePag; i++)
+                        {
+                            if (Model.Item2 == i)
+                            {
+                                <a href="@Url.Action("Index","Anuncios",new { vista = i })" class="item-pagination flex-c-m trans-0-4 active-pagination">@i</a>
+                            }
+                            else
+                            {
+                                <a href="@Url.Action("Index","Anuncios",new { vista = i })" class="item-pagination flex-c-m trans-0-4">@i</a>
+                            }
+                        }
+                        @if (Model.Item2 < cantdePag)
+                        {
+                            <a href="@Url.Action("Index","Anuncios",new { vista=Model.Item2+1})">&gt;</a>
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
