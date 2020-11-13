@@ -323,10 +323,13 @@
                                 </a>
 
                                 <div class="block3-txt p-t-14">
-                                    <h4 class="p-b-7">
-                                        @Html.ActionLink(item.Anuncio.Producto.Nombre, "Details", "Subastas", new { id = item.SubastaId }, htmlAttributes: new { @class = "m-text11" })
-                                    </h4>
+                                    @if (User.IsInRole("Comprador"))
+                                    {
+                                        <h4 class="p-b-7">
+                                            @Html.ActionLink(item.Anuncio.Producto.Nombre, "Details", "Subastas", new { id = item.SubastaId }, htmlAttributes: new { @class = "m-text11" })
+                                        </h4>
 
+                                    }
 
 
                                     <span class="s-text6">

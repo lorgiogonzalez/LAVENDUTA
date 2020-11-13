@@ -88,10 +88,13 @@
                                     @item.Comentarios
                                 </p>
 
-                                <a href="@Url.Action("Details",new { id = item.SubastaId })" class="s-text20">
-                                    Continue Reading
-                                    <i class="fa fa-long-arrow-right m-l-8" aria-hidden="true"></i>
-                                </a>
+                                @if (User.IsInRole("Comprador"))
+                                {
+                                    <a href="@Url.Action("Details",new { id = item.SubastaId })" class="s-text20">
+                                        Continue Reading
+                                        <i class="fa fa-long-arrow-right m-l-8" aria-hidden="true"></i>
+                                    </a>
+                                }
                             </div>
                         </div>
                     }
@@ -202,11 +205,13 @@
                                 <p class="p-b-12">
                                     @item.Comentarios
                                 </p>
-
-                                <a href="@Url.Action("Details",new { id = item.SubastaId })" class="s-text20">
-                                    Continue Reading
-                                    <i class="fa fa-long-arrow-right m-l-8" aria-hidden="true"></i>
-                                </a>
+                                @if (User.IsInRole("Comprador"))
+                                {
+                                    <a href="@Url.Action("Details",new { id = item.SubastaId })" class="s-text20">
+                                        Continue Reading
+                                        <i class="fa fa-long-arrow-right m-l-8" aria-hidden="true"></i>
+                                    </a>
+                                }
                             </div>
                         </li>
                         }

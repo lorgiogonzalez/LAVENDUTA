@@ -35,7 +35,7 @@ namespace LA_VENDUTA.Controllers
             }
             return View(new Tuple<IEnumerable<Subasta>,int,int,int>(subastas, vista, filtros1, filtros2));
         }
-        [Authorize(Roles = RoleName.Vendedor)]
+        [Authorize(Roles = RoleName.Comprador)]
         // GET: Subastas/Details/5
         public async Task<ActionResult> Details(int? id)
         {
